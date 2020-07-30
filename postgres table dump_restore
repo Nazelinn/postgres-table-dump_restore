@@ -1,0 +1,31 @@
+Postgres de dump işlemi tablo,schema ve datalı olacak şekilde  bazında aşağıdaki işlemler yapılır
+-d database -t table 
+-bash-4.2$ pg_dump -Fc  -d postgres -t '"nza"' -t '"orders"' -t '"products"'  > /var/lib/pgsql/11/backups/Tables.dump -v
+Password:
+pg_dump: last built-in OID is 16383
+pg_dump: reading extensions
+pg_dump: identifying extension members
+pg_dump: reading schemas 
+pg_dump: finding the columns and types of table "public.orders"
+pg_dump: finding the columns and types of table "public.products"
+pg_dump: finding the columns and types of table "public.nza" 
+
+-bash-4.2$ cd /var/lib/pgsql/11/backups/
+-bash-4.2$ ll
+total 36
+drwx------ 20 postgres postgres  4096 Jul 30 19:00 30072020
+-rw-r--r--  1 postgres postgres 28824 Jul 30 19:12 Tables.dump 
+
+-bash-4.2$ /usr/pgsql-11/bin/pg_restore -d Postgres_2 /var/lib/pgsql/11/backups/Tables.dump -v
+pg_restore: connecting to database for restore
+Password:
+pg_restore: creating TABLE "public.nza"
+pg_restore: [archiver (db)] Error while PROCESSING TOC:
+pg_restore: [archiver (db)] Error from TOC entry 224; 1259 16617 TABLE nza postgres
+pg_restore: [archiver (db)] could not execute query: ERROR:  cannot execute CREATE TABLE in a read-only transaction
+    Command was: CREATE TABLE public.nza (
+    id smallint NOT NULL,
+    name character varying(15) NOT NULL,
+    description text,
+    picture bytea
+); 
